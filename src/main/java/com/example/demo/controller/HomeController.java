@@ -1,7 +1,7 @@
-package com.example.demo;
+package com.example.demo.controller;
 
 
-import com.example.demo.dto.UserDto;
+import com.example.demo.entity.User;
 import com.example.demo.exception.ExistingUserException;
 import com.example.demo.service.UserService;
 import org.springframework.data.domain.Page;
@@ -27,17 +27,15 @@ public class HomeController
         return findPaginated(1, "name", "asc", model);
     }
 
-    @GetMapping("/listUsers")
-    public String getUsers(Model model)
-    {
-        // create model attribute to bind form data
+    @GetMapping("/showNewUser")
+    public String showNewUser(Model model) {
         User user = new User();
         model.addAttribute("user", user);
         return "new_user";
     }
 
     @PostMapping("/saveUser")
-    public String saveEmployee(@ModelAttribute("employee") User user) throws ExistingUserException
+    public String saveUser(@ModelAttribute("user") User user) throws ExistingUserException
     {
         userService.createUser(user);
         return "redirect:/";
@@ -46,8 +44,6 @@ public class HomeController
     @GetMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable(value = "id") long id)
     {
-
-        // call delete employee method
         this.userService.deleteUser(id);
         return "redirect:/";
     }
