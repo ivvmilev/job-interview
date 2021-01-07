@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
 
-import com.example.demo.User;
-import com.example.demo.UserRepository;
+import com.example.demo.entity.User;
+import com.example.demo.entity.UserRepository;
 import com.example.demo.dto.UserDto;
 import com.example.demo.exception.Exceptions;
 import com.example.demo.exception.ExistingUserException;
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public void deleteUser(Long id)
+    public void deleteUser(long id)
     {
         userRepository.deleteById(id);
     }

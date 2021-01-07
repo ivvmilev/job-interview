@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.User;
+import com.example.demo.entity.User;
 import com.example.demo.dto.UserDto;
 import com.example.demo.exception.ExistingUserException;
 import org.springframework.data.domain.Page;
@@ -15,7 +15,7 @@ public interface UserService
 
     Optional<User> getUserByName(String name);
 
-    void deleteUser(Long id);
+    void deleteUser(long id);
 
     UserDto getUserById(Long id);
 
