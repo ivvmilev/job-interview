@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Users</title>
+</head>
+<body>
+<div class="container">
+    <h1>Users</h1>
+    <hr>
+    <h2>Save User</h2>
+
+    <form action="#" th:action="@{/saveUser}" th:object="${user}"
+          method="POST">
+        <label>
+            <input type="text" th:field="*{name}"
+                   placeholder="User First Name" class="form-control mb-4 col-4">
+        </label>
+
+        <label>
+            <input type="text" th:field="*{lastName}"
+                   placeholder="User Last Name" class="form-control mb-4 col-4">
+        </label>
+
+        <button type="submit" class="btn btn-info col-2"> Save User</button>
+    </form>
+
+    <hr>
+
+    <a th:href="@{/}"> Back to User List</a>
+</div>
+</body>
+</html>
