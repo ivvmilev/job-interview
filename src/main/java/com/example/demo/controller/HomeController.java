@@ -23,12 +23,21 @@ public class HomeController
         this.userService = userServiceImpl;
     }
 
+    /**
+     * Application main page-get paginated users
+     * @return Html page - index
+     */
     @GetMapping("/")
     public String viewHomePage(Model model)
     {
         return findPaginated(1, "name", "asc", model);
     }
 
+    /**
+     * Creation of new-user page
+     * @param model user properties
+     * @return Html page new_user
+     */
     @GetMapping("/showNewUser")
     public String showNewUser(Model model)
     {
@@ -37,6 +46,12 @@ public class HomeController
         return "new_user";
     }
 
+    /**
+     * Creation of user page
+     * @param user New user created by the user
+     * @return return to main page after creation
+     * @throws ExistingUserException Throw exception if user with name found
+     */
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") @NotNull UserDto user) throws ExistingUserException
     {
@@ -44,6 +59,11 @@ public class HomeController
         return "redirect:/";
     }
 
+    /**
+     * Delete user function
+     * @param id Id of user to be deleted
+     * @return return to main page after deletion
+     */
     @RequestMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable(value = "id") long id)
     {
@@ -51,7 +71,13 @@ public class HomeController
         return "redirect:/";
     }
 
-
+    /**
+     * Pagination functionality
+     * @param pageNo Which page to be showed
+     * @param sortField Sorted by(name or lastName)
+     * @param model attributes for sorting
+     * @return Html page index
+     */
     @GetMapping("/page/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 @RequestParam("sortField") String sortField,

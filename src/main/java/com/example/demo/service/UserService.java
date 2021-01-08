@@ -9,15 +9,40 @@ import java.util.Optional;
 
 public interface UserService
 {
+    /**
+     * Create user service
+     * @param user User to be created
+     * @throws ExistingUserException Exception if user with name found
+     */
     void createUser(UserDto user) throws ExistingUserException;
 
-    Iterable<UserDto> getUsers(int page, int size);
-
+    /**
+     * Check if user with given name found
+     * @param name Name to be found
+     * @return Optional User
+     */
     Optional<User> getUserByName(String name);
 
+    /**
+     * Service for deletion of user by ID
+     * @param id ID of user to be deleted
+     */
     void deleteUser(long id);
 
+    /**
+     * Service to search user by ID
+     * @param id ID of user
+     * @return User found
+     */
     UserDto getUserById(Long id);
 
+    /**
+     * Find current page
+     * @param pageNo Which page
+     * @param pageSize Page size
+     * @param sortField Sorting of result
+     * @param sortDirection which direction to be sorted
+     * @return Page with users
+     */
     Page<User> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
 }

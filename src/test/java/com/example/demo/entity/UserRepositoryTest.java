@@ -33,7 +33,7 @@ class UserRepositoryTest
     @Test
     void registrationWorksThroughAllLayers() throws Exception
     {
-        String name = "Pesho1321a2aaa";
+        String name = "Pesho1321a2aaaaa";
         UserDto user = new UserDto(name, "I1vanov");
 
         mockMvc.perform(post("/saveUser", user)

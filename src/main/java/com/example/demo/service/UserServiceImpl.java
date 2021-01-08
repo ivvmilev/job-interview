@@ -20,13 +20,12 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService
 {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-//    public UserServiceImpl(UserRepository userRepository)
-//    {
-//        this.userRepository = userRepository;
-//    }
+    public UserServiceImpl(UserRepository userRepository)
+    {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public void createUser(@NotNull UserDto user) throws ExistingUserException
@@ -43,21 +42,6 @@ public class UserServiceImpl implements UserService
         {
             throw new ExistingUserException(Exceptions.EXISTING_USER_EXCEPTION);
         }
-    }
-
-    @Override
-    public Iterable<UserDto> getUsers(int page, int size)
-    {
-        Pageable sortedByName =
-                PageRequest.of(page, size, Sort.by("name"));
-
-        Page<User> userList = userRepository.findAll(sortedByName);
-
-        return userList
-                .stream()
-                .map(user ->
-                        new UserDto(user.getName(), user.getLastName()))
-                .collect(Collectors.toList());
     }
 
     @Override
