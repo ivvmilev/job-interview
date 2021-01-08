@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
 import com.example.demo.exception.ExistingUserException;
 import com.example.demo.service.UserService;
+import com.sun.istack.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,20 +30,21 @@ public class HomeController
     }
 
     @GetMapping("/showNewUser")
-    public String showNewUser(Model model) {
-        User user = new User();
+    public String showNewUser(Model model)
+    {
+        UserDto user = new UserDto();
         model.addAttribute("user", user);
         return "new_user";
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute("user") User user) throws ExistingUserException
+    public String saveUser(@ModelAttribute("user") @NotNull UserDto user) throws ExistingUserException
     {
         userService.createUser(user);
         return "redirect:/";
     }
 
-    @GetMapping("/deleteUser/{id}")
+    @RequestMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable(value = "id") long id)
     {
         this.userService.deleteUser(id);

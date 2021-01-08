@@ -6,6 +6,8 @@ import com.example.demo.entity.UserRepository;
 import com.example.demo.dto.UserDto;
 import com.example.demo.exception.Exceptions;
 import com.example.demo.exception.ExistingUserException;
+import com.sun.istack.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,23 +20,24 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService
 {
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository)
-    {
-        this.userRepository = userRepository;
-    }
+//    public UserServiceImpl(UserRepository userRepository)
+//    {
+//        this.userRepository = userRepository;
+//    }
 
     @Override
-    public void createUser(User user) throws ExistingUserException
+    public void createUser(@NotNull UserDto user) throws ExistingUserException
     {
-        checkIfUserExists(user);
+        checkIfUserExists(user.getName());
         userRepository.save(new User(user.getName(), user.getLastName()));
     }
 
-    private void checkIfUserExists(User userDto) throws ExistingUserException
+    private void checkIfUserExists(String name) throws ExistingUserException
     {
-        Optional<User> existingUser = getUserByName(userDto.getName());
+        Optional<User> existingUser = getUserByName(name);
 
         if (existingUser.isPresent())
         {

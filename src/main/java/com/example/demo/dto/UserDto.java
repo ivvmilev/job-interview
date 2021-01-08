@@ -1,12 +1,18 @@
 package com.example.demo.dto;
 
 import com.example.demo.entity.User;
+import com.sun.istack.NotNull;
 
 public class UserDto
 {
+    @NotNull
     private String name;
 
     private String lastName;
+
+    public UserDto()
+    {
+    }
 
     public UserDto(String name, String lastName)
     {

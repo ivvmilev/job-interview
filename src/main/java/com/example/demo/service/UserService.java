@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface UserService
 {
-    void createUser(User user) throws ExistingUserException;
+    void createUser(UserDto user) throws ExistingUserException;
 
     Iterable<UserDto> getUsers(int page, int size);
 
