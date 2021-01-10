@@ -5,6 +5,8 @@ import com.sun.istack.NotNull;
 
 public class UserDto
 {
+    private long id;
+
     @NotNull
     private String name;
 
@@ -22,6 +24,7 @@ public class UserDto
 
     public UserDto(User user)
     {
+        this.id = user.getId();
         this.name = user.getName();
         this.lastName = user.getLastName();
     }
@@ -44,5 +47,15 @@ public class UserDto
     public void setLastName(String lastName)
     {
         this.lastName = lastName;
+    }
+
+    public long getId()
+    {
+        return id;
+    }
+
+    public void setId(long id)
+    {
+        this.id = id;
     }
 }
