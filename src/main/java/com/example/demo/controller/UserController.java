@@ -1,18 +1,17 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.UserModelAssembler;
 import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
 import com.example.demo.exception.ExistingUserException;
 import com.example.demo.service.UserService;
 import com.sun.istack.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,10 +23,12 @@ public class UserController
 {
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService)
+    private final UserModelAssembler assembler;
+
+    public UserController(UserService userService, UserModelAssembler assembler)
     {
         this.userService = userService;
+        this.assembler = assembler;
     }
 
     @GetMapping("/user")
@@ -44,9 +45,7 @@ public class UserController
     CollectionModel<EntityModel<User>> all()
     {
         List<EntityModel<User>> users = getAllUsers().stream()
-                .map(employee -> EntityModel.of(employee,
-                        linkTo(methodOn(UserController.class).getOneUser(employee.getId())).withSelfRel(),
-                        linkTo(methodOn(UserController.class).getAllUsers()).withRel("users")))
+                .map(assembler::toModel)
                 .collect(Collectors.toList());
 
         return CollectionModel.of(users, linkTo(methodOn(UserController.class).all()).withSelfRel());
@@ -58,13 +57,11 @@ public class UserController
     }
 
     @GetMapping("/user/{id}")
-    EntityModel<User> getOneUser(@PathVariable Long id)
+    public EntityModel<User> getOneUser(@PathVariable Long id)
     {
         User user = userService.getUserById(id);
 
-        return EntityModel.of(user,
-                linkTo(methodOn(UserController.class).getOneUser(id)).withSelfRel(),
-                linkTo(methodOn(UserController.class).userService.getAllUsers()).withRel("users"));
+        return assembler.toModel(user);
     }
 
     @PostMapping("/user")
