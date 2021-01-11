@@ -29,20 +29,20 @@ class UserRepositoryTest
     @Autowired
     private UserRepository userRepository;
 
-
     @Test
     void registrationWorksThroughAllLayers() throws Exception
     {
         String name = "Pesho1321a2aaaaa";
-        UserDto user = new UserDto(name, "I1vanov");
+        String lastName = "Ivanov";
+        UserDto user = new UserDto(name, lastName);
 
-        mockMvc.perform(post("/saveUser", user)
+        mockMvc.perform(post("/user", user)
                 .flashAttr("user", user)
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(user)));
 
 
-        User userEntity = userRepository.findByName(name).orElse(null);
+        User userEntity = userRepository.findUserByNameAndLastName(name, lastName).orElse(null);
 
         assertThat(Objects.requireNonNull(userEntity).getName()).isEqualTo(name);
     }

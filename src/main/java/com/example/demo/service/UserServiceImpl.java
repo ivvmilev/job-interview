@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,14 +29,14 @@ public class UserServiceImpl implements UserService
     @Override
     public UserDto createUser(@NotNull UserDto user) throws ExistingUserException
     {
-        checkIfUserExists(user.getName());
+        checkIfUserExists(user.getName(), user.getLastName());
         User domainUser = new User(user.getName(), user.getLastName());
         return new UserDto(userRepository.save(domainUser));
     }
 
-    private void checkIfUserExists(String name) throws ExistingUserException
+    private void checkIfUserExists(String name, String lastName) throws ExistingUserException
     {
-        Optional<User> existingUser = getUserByName(name);
+        Optional<User> existingUser = getUserByName(name, lastName);
 
         if (existingUser.isPresent())
         {
@@ -44,9 +45,9 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public Optional<User> getUserByName(String name)
+    public Optional<User> getUserByName(String name, String lastName)
     {
-        return userRepository.findByName(name);
+        return userRepository.findUserByNameAndLastName(name, lastName);
     }
 
     @Override
@@ -63,11 +64,15 @@ public class UserServiceImpl implements UserService
         }
     }
 
+    public List<User> getAllUsers(){
+        return this.userRepository.findAll();
+    }
+
     @Override
-    public UserDto getUserById(Long id)
+    public User getUserById(Long id)
     {
         Optional<User> existingUser = userRepository.findById(id);
-        return existingUser.map(UserDto::new).orElseThrow(() -> new UserNotFoundException(id));
+        return existingUser.orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Override

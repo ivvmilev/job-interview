@@ -1,6 +1,7 @@
-package com.example.demo.exception.advice;
+package com.example.demo.exception.handlers;
 
-import com.example.demo.exception.ExistingUserException;
+
+import com.example.demo.service.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,12 +9,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class ExistingUserAdvice
+public class UserNotFoundAdvice
 {
     @ResponseBody
-    @ExceptionHandler(ExistingUserException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    String userNotFoundHandler(ExistingUserException ex)
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String employeeNotFoundHandler(UserNotFoundException ex)
     {
         return ex.getMessage();
     }
