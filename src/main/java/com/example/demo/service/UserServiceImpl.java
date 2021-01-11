@@ -27,11 +27,11 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public UserDto createUser(@NotNull UserDto user) throws ExistingUserException
+    public User createUser(@NotNull User user) throws ExistingUserException
     {
         checkIfUserExists(user.getName(), user.getLastName());
         User domainUser = new User(user.getName(), user.getLastName());
-        return new UserDto(userRepository.save(domainUser));
+        return userRepository.save(domainUser);
     }
 
     private void checkIfUserExists(String name, String lastName) throws ExistingUserException

@@ -15,7 +15,7 @@ public interface UserService
      * @param user User to be created
      * @throws ExistingUserException Exception if user with name found
      */
-    UserDto createUser(UserDto user) throws ExistingUserException;
+    User createUser(User user) throws ExistingUserException;
 
     /**
      * Check if user with given name found

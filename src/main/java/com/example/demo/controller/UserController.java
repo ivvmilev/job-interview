@@ -10,6 +10,8 @@ import com.sun.istack.NotNull;
 import org.springframework.data.domain.Slice;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,7 +43,7 @@ public class UserController
         return userService.findPaginated(pageNumber, sortField, order);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/")
     CollectionModel<EntityModel<User>> all()
     {
         List<EntityModel<User>> users = getAllUsers().stream()
@@ -65,14 +67,20 @@ public class UserController
     }
 
     @PostMapping("/user")
-    public UserDto saveUser(@RequestBody @NotNull UserDto user) throws ExistingUserException
+    public ResponseEntity<?> saveUser(@RequestBody @NotNull User newUser) throws ExistingUserException
     {
-        return userService.createUser(user);
+        EntityModel<User> entityModel = assembler.toModel(userService.createUser(newUser));
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
+                .body(entityModel);
     }
 
     @DeleteMapping("/user/{id}")
-    public void deleteUser(@PathVariable(value = "id") long id)
+    public ResponseEntity<?> deleteUser(@PathVariable(value = "id") long id)
     {
-        this.userService.deleteUser(id);
+        userService.deleteUser(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
