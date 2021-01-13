@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 
 import com.example.demo.UserModelAssembler;
-import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
 import com.example.demo.exception.ExistingUserException;
 import com.example.demo.service.UserService;
@@ -14,6 +13,7 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,6 +70,8 @@ public class UserController
     public ResponseEntity<?> saveUser(@RequestBody @NotNull User newUser) throws ExistingUserException
     {
         EntityModel<User> entityModel = assembler.toModel(userService.createUser(newUser));
+
+       URI a = entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri();
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
