@@ -1,4 +1,5 @@
-FROM openjdk:8
+FROM openjdk:8-jdk-alpine
 MAINTAINER Ivan Milev <ivvmilev@gmail.com>
-ADD target/demo-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["bash", "java", "-jar", "entrypoint.sh", "/app.jar"]
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
